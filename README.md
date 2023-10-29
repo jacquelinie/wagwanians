@@ -1,6 +1,9 @@
 # wagwanians
 
 Google Drive Link:
+https://drive.google.com/drive/folders/1afCc6RjX6WWxACc96taoZNxsU9E3Gyu7?fbclid=IwAR0se3F7nYmmesFNpgVXTUr_-bZbTRRtSPmcfisnPd6A8Om8YwWOEmUsrUg
+
+Slide Deck:
 https://drive.google.com/file/d/1U9ztaCTn2is1LF7WLlFT0Yfxuo5Ahk9G/view
 
 
