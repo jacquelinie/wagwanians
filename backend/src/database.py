@@ -18,8 +18,9 @@ import pickle
 FILE_LOCATION = "database.p"
 
 initial_object = {
+    'users': {},
     'courses': {},
-}
+} 
 
 def clear_store():
     store = database.get()

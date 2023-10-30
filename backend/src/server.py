@@ -19,6 +19,7 @@ from flask_cors import CORS
 
 # Functions
 from src import config
+from authentication import auth_login, auth_logout, auth_register, password_reset_request, reset_user_password
 from src.course import add_course, delete_course, edit_course_name, edit_course_start, edit_course_end, edit_course_uoc
 from src.task import add_task, delete_task, edit_task_name, edit_task_description, edit_task_start_date, edit_task_end_date, set_task_recurring, set_task_unrecurring, check_task, uncheck_task
 from src.database import clear_store
@@ -47,30 +48,6 @@ def default_handler(err):
 
 application = Flask(__name__, static_folder="../static", static_url_path='/static/')
 
-##### SWAGGER #####
-# SWAGGER_URL = '/api/docs'  # URL for exposing Swagger UI (without trailing '/')
-# Our API url (can of course be a local resource)
-# API_URL = 'http://127.0.0.1:9090/swagger.yaml'
-
-# swaggerui_blueprint = get_swaggerui_blueprint(
-#     # Swagger UI static files will be mapped to '{SWAGGER_URL}/dist/'
-#     SWAGGER_URL,
-#     API_URL,
-#     config={  # Swagger UI config overrides
-#         'app_name': "Test application"
-#     },
-#     # oauth_config={  # OAuth config.
-#     #    See https://github.com/swagger-api/swagger-ui#oauth2-configuration .
-#     #    'clientId': "your-client-id",
-#     #    'clientSecret': "your-client-secret-if-required",
-#     #    'realm': "your-realms",
-#     #    'appName': "your-app-name",
-#     #    'scopeSeparator': " ",
-#     #    'additionalQueryStringParams': {'test': "hello"}
-#     # }
-# )
-
-# application.register_blueprint(swaggerui_blueprint)
 
 CORS(application)
 
@@ -84,10 +61,6 @@ def serve_static_path(path):
     return send_from_directory('', path)
 
 
-# @application.route("/swagger.yaml", methods=['GET'])
-# def serve_swagger():
-#     return send_from_directory('static', 'swagger.yaml')
-
 # Methods: GET, POST, PUT, DELETE
 
 
@@ -96,6 +69,51 @@ def handle_clear():
     clear_store()
     return {}
 
+
+## Authentication
+
+@application.route("/auth/register", methods=['POST'])
+def handle_register():
+    request_data = request.get_json()
+    email = request_data['email']
+    password = request_data['password']
+    name_first = request_data['name_first']
+    name_last = request_data['name_last']
+    return auth_register(email, password, name_first, name_last)
+
+
+@application.route("/auth/login", methods=['POST'])
+def handle_login():
+    request_data = request.get_json()
+    email = request_data['email']
+    password = request_data['password']
+    return auth_login(email, password)
+
+
+@application.route("/auth/logout", methods=['POST'])
+def handle_logout():
+    request_data = request.get_json()
+    token = request_data['token']
+    return auth_logout(token)
+
+
+@application.route("/auth/passwordreset/request", methods=['POST'])
+def handle_reset_request():
+    request_data = request.get_json()
+    email = request_data['email']
+    return password_reset_request(email)
+
+
+@application.route("/auth/passwordreset/reset", methods=['POST'])
+def handle_reset():
+    request_data = request.get_json()
+    reset_code = str(request_data['reset_code'])
+    new_password = str(request_data['new_password'])
+    return reset_user_password(reset_code, new_password)
+
+
+
+## Course methods
 
 @application.route("/course/add", methods=['POST'])
 def handle_course_add():
@@ -141,6 +159,7 @@ def handle_course_edit_uoc():
     return edit_course_uoc(name, new_uoc)
 
 
+## Task methods
 
 @application.route("/task/add", methods=['POST'])
 def handle_task_add():
