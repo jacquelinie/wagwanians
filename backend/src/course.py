@@ -14,12 +14,16 @@ from src.database import database, clear_store
 from src.error import InputError, AccessError
 
 
-def add_course(name, start = None, end = None, uoc = None):
+def add_course(name, start = None, end = None, uoc = None, user_id):
     store = database.get()
     courses = store["courses"]
+    users = store["users"]
 
     if name in courses.keys():
         raise InputError("Course already exists")
+
+    if user_id < 0 or user_id >= len(users)
+        raise InputError("User is not valid")
 
     # Initiate Course
     course = {}
@@ -42,12 +46,16 @@ def add_course(name, start = None, end = None, uoc = None):
     return {}
 
 
-def delete_course(name):
+def delete_course(name, user_id):
     store = database.get()
     courses = store["courses"]
+    users = store["users"]
 
     if name not in courses.keys():
         raise InputError("Course does not exist")
+
+    if user_id < 0 or user_id >= len(users)
+        raise InputError("User is not valid")
 
     # Remove course
     del courses[name]
@@ -58,12 +66,16 @@ def delete_course(name):
     return {}
 
 
-def edit_course_name(name, new_name):
+def edit_course_name(name, new_name, user_id):
     store = database.get()
     courses = store["courses"]
+    users = store["users"]
 
     if name not in courses.keys():
         raise InputError("Course does not exist")
+
+    if user_id < 0 or user_id >= len(users)
+        raise InputError("User is not valid")
 
     # Edit name
     course = courses[name]
@@ -76,12 +88,17 @@ def edit_course_name(name, new_name):
     return {}
 
 
-def edit_course_start(name, new_start):
+def edit_course_start(name, new_start, user_id):
     store = database.get()
     courses = store["courses"]
+    users = store["users"]
 
     if name not in courses.keys():
         raise InputError("Course does not exist")
+
+    if user_id < 0 or user_id >= len(users)
+        raise InputError("User is not valid")
+
     course = courses[name]
 
     # Edit start
@@ -94,12 +111,17 @@ def edit_course_start(name, new_start):
     return {}
 
 
-def edit_course_end(name, new_end):
+def edit_course_end(name, new_end, user_id):
     store = database.get()
     courses = store["courses"]
+    users = store["users"]
 
     if name not in courses.keys():
         raise InputError("Course does not exist")
+
+    if user_id < 0 or user_id >= len(users)
+        raise InputError("User is not valid")
+
     course = courses[name]
 
     # Edit end
@@ -112,12 +134,17 @@ def edit_course_end(name, new_end):
     return {}
 
 
-def edit_course_uoc(name, new_uoc):
+def edit_course_uoc(name, new_uoc, user_id):
     store = database.get()
     courses = store["courses"]
+    users = store["users"]
 
     if name not in courses.keys():
         raise InputError("Course does not exist")
+
+    if user_id < 0 or user_id >= len(users)
+        raise InputError("User is not valid")
+    
     course = courses[name]
 
     # Edit uoc
